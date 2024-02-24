@@ -20,6 +20,28 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _start_date = TextEditingController();
   final TextEditingController _end_date = TextEditingController();
 
+  Future<void> addData(requestBody) async {
+    final response = await http.post(
+      Uri.parse(
+          'https://scubetech.xyz/projects/dashboard/add-project-elements/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      Get.showSnackbar(successSnack('Added Successfully'));
+      debugPrint('ok: ${response.body}');
+    } else if (response.statusCode == 201) {
+      Get.showSnackbar(successSnack('Added Successfully'));
+      debugPrint('OK : ${response.body}');
+    } else {
+      Get.showSnackbar(failedSnack('Something Wrong'));
+      debugPrint('Failed to add : ${response.body}');
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -111,26 +133,7 @@ class _AddPageState extends State<AddPage> {
                           "assigned_engineer": _assigned_engineer.text,
                           "assigned_technician": _ssigned_technician.text
                         };
-
-                        final response = await http.post(
-                          Uri.parse(
-                              'https://scubetech.xyz/projects/dashboard/add-project-elements/'),
-                          headers: <String, String>{
-                            'Content-Type': 'application/json; charset=UTF-8',
-                          },
-                          body: jsonEncode(requestBody),
-                        );
-
-                        if (response.statusCode == 200) {
-                          Get.showSnackbar(successSnack('Added Successfully'));
-                          debugPrint('ok: ${response.body}');
-                        } else if (response.statusCode == 201) {
-                          Get.showSnackbar(successSnack('Added Successfully'));
-                          debugPrint('OK : ${response.body}');
-                        } else {
-                          Get.showSnackbar(failedSnack('Something Wrong'));
-                          debugPrint('Failed to add : ${response.body}');
-                        }
+                        addData(requestBody);
                       }
                     }, MediaQuery.of(context).size.height * 0.075, "Submit")
                   ],

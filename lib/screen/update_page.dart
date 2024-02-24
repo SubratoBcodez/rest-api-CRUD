@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:iconsax/iconsax.dart';
@@ -10,7 +9,7 @@ import 'home_page.dart';
 
 class UpdatePage extends StatefulWidget {
   final Project project;
-   UpdatePage({required this.project});
+  UpdatePage({required this.project});
 
   @override
   State<UpdatePage> createState() => _UpdatePageState();
@@ -25,6 +24,25 @@ class _UpdatePageState extends State<UpdatePage> {
   late TextEditingController _end_date;
 
   final _formKey = GlobalKey<FormState>();
+  Future<void> updateData(requestBody) async {
+    final response = await http.put(
+      Uri.parse(
+          'https://scubetech.xyz/projects/dashboard/update-project-elements/${widget.project.id}/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      Get.showSnackbar(successSnack('Added Succesfully'));
+    } else if (response.statusCode == 201) {
+      Get.showSnackbar(successSnack('Added Successfully'));
+    } else {
+      Get.showSnackbar(failedSnack('Access Denied'));
+      debugPrint('Failed to update : ${response.body}');
+    }
+  }
 
   @override
   void initState() {
@@ -56,31 +74,31 @@ class _UpdatePageState extends State<UpdatePage> {
                   children: [
                     customText("Project Name", Iconsax.document,
                         TextInputType.text, _project_name, (val) {
-                          if (val!.isEmpty) {
-                            return "can't be empty";
-                          }
-                        }),
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      }
+                    }),
                     SizedBox(height: 10),
                     customText("Project Update", Iconsax.document,
                         TextInputType.text, _project_update, (val) {
-                          if (val!.isEmpty) {
-                            return "can't be empty";
-                          }
-                        }),
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      }
+                    }),
                     SizedBox(height: 10),
                     customText("Assigned Engineer", Iconsax.profile_tick,
                         TextInputType.text, _assigned_engineer, (val) {
-                          if (val!.isEmpty) {
-                            return "can't be empty";
-                          }
-                        }),
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      }
+                    }),
                     SizedBox(height: 10),
                     customText("Assigned Tech", Iconsax.profile_2user,
                         TextInputType.text, _assigned_technician, (val) {
-                          if (val!.isEmpty) {
-                            return "can't be empty";
-                          }
-                        }),
+                      if (val!.isEmpty) {
+                        return "can't be empty";
+                      }
+                    }),
                     SizedBox(height: 10),
                     customDate(_start_date, () async {
                       DateTime? selectedDate = await showDatePicker(
@@ -92,7 +110,7 @@ class _UpdatePageState extends State<UpdatePage> {
                       if (selectedDate != null) {
                         setState(() {
                           _start_date.text =
-                          "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                              "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
                         });
                       }
                     }, "Start Date"),
@@ -107,14 +125,13 @@ class _UpdatePageState extends State<UpdatePage> {
                       if (selectedDate != null) {
                         setState(() {
                           _end_date.text =
-                          "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+                              "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
                         });
                       }
                     }, "End Date"),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                     customButton(() async {
                       if (_formKey.currentState!.validate()) {
-
                         Map<String, dynamic> requestBody = {
                           "start_date": _start_date.text,
                           "end_date": _end_date.text,
@@ -123,24 +140,7 @@ class _UpdatePageState extends State<UpdatePage> {
                           "assigned_engineer": _assigned_engineer.text,
                           "assigned_technician": _assigned_technician.text
                         };
-
-                        final response = await http.post(
-                          Uri.parse('https://scubetech.xyz/projects/dashboard/update-project-elements/${widget.project.id}/'),
-                          headers: <String, String>{
-                            'Content-Type': 'application/json; charset=UTF-8',
-                          },
-                          body: jsonEncode(requestBody),
-                        );
-
-                        if (response.statusCode == 200) {
-                          Get.showSnackbar(successSnack('Added Succesfully'));
-
-                        } else if (response.statusCode == 201) {
-                          Get.showSnackbar(successSnack('Added Successfully'));
-                        } else {
-                          Get.showSnackbar(failedSnack('Access Denied'));
-                          debugPrint('Failed to update : ${response.body}');
-                        }
+                        updateData(requestBody);
                       }
                     }, MediaQuery.of(context).size.height * 0.075, "Update")
                   ],
@@ -152,7 +152,4 @@ class _UpdatePageState extends State<UpdatePage> {
       ),
     );
   }
-
-
 }
-

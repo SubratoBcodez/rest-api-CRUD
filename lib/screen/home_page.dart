@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
       throw Exception('Failed to load projects');
     }
   }
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -55,13 +55,13 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.only(top:10,left: 20),
                     margin: EdgeInsets.symmetric(horizontal: 10,vertical: 7),
                     decoration: BoxDecoration(
-                      color: Colors.white60,
-                      borderRadius: BorderRadius.circular(10)
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(10)
                     ),
                     height: MediaQuery.of(context).size.height*0.14,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [Text('Project Name : ${snapshot.data![index].projectName}',style: TextStyle(fontWeight: FontWeight.bold),),
                         Text('Update: ${snapshot.data![index].projectUpdate}'),
                         Text('Assigned Engineer: ${snapshot.data![index].assignedEngineer}'),
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
 
       floatingActionButton: FloatingActionButton(
-          child: Icon(Iconsax.add),
+          child: Icon(Iconsax.card_edit),
           onPressed: () {
             Get.toNamed(add_page);
           }),
@@ -118,14 +118,14 @@ class Project {
   });
   factory Project.fromJson(Map<String, dynamic> json) {
     return Project(
-      id: json['id'],
-      startDate: json['start_date'],
-      endDate: json['end_date'],
-      projectName: json['project_name'],
-      projectUpdate: json['project_update'],
-      assignedEngineer: json['assigned_engineer'],
-      assignedTechnician: json['assigned_technician'],
-      duration: json['duration']
+        id: json['id'],
+        startDate: json['start_date'],
+        endDate: json['end_date'],
+        projectName: json['project_name'],
+        projectUpdate: json['project_update'],
+        assignedEngineer: json['assigned_engineer'],
+        assignedTechnician: json['assigned_technician'],
+        duration: json['duration']
     );
   }
 }
