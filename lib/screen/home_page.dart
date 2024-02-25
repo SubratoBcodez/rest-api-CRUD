@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       List<Project> projects = [];
-      data.forEach((project) {
+      for (var project in data) {
         projects.add(Project.fromJson(project));
-      });
+      }
       return projects;
     } else {
       throw Exception('Failed to load projects');
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEAECEE),
+      backgroundColor: const Color(0xFFEAECEE),
       appBar: homeAppBar("Project Details"),
       body: FutureBuilder<List<Project>>(
         future: fetchProjects(),
@@ -52,8 +52,8 @@ class _HomePageState extends State<HomePage> {
                   // },
                   onTap: ()=> Get.toNamed(update_page, arguments: snapshot.data![index]),
                   child: Container(
-                    padding: EdgeInsets.only(top:10,left: 20),
-                    margin: EdgeInsets.symmetric(horizontal: 10,vertical: 7),
+                    padding: const EdgeInsets.only(top:10,left: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 7),
                     decoration: BoxDecoration(
                         color: Colors.white60,
                         borderRadius: BorderRadius.circular(10)
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text('Project Name : ${snapshot.data![index].projectName}',style: TextStyle(fontWeight: FontWeight.bold),),
+                      children: [Text('Project Name : ${snapshot.data![index].projectName}',style: const TextStyle(fontWeight: FontWeight.bold),),
                         Text('Update: ${snapshot.data![index].projectUpdate}'),
                         Text('Assigned Engineer: ${snapshot.data![index].assignedEngineer}'),
                         Text('Assigned Technician: ${snapshot.data![index].assignedTechnician}'),
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               child: Text('Error: ${snapshot.error}'),
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
 
 
       floatingActionButton: FloatingActionButton(
-          child: Icon(Iconsax.card_edit),
+          child: const Icon(Iconsax.card_edit),
           onPressed: () {
             Get.toNamed(add_page);
           }),

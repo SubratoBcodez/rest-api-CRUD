@@ -5,11 +5,12 @@ import 'dart:convert';
 import 'package:iconsax/iconsax.dart';
 
 import '../bcodez/custom.dart';
+import '../bcodez/route.dart';
 import 'home_page.dart';
 
 class UpdatePage extends StatefulWidget {
   final Project project;
-  UpdatePage({required this.project});
+  const UpdatePage({super.key, required this.project});
 
   @override
   State<UpdatePage> createState() => _UpdatePageState();
@@ -36,8 +37,10 @@ class _UpdatePageState extends State<UpdatePage> {
 
     if (response.statusCode == 200) {
       Get.showSnackbar(successSnack('Added Succesfully'));
+      Future.delayed(Duration(seconds: 2), ()=> Get.toNamed(home_page));
     } else if (response.statusCode == 201) {
       Get.showSnackbar(successSnack('Added Successfully'));
+      Future.delayed(Duration(seconds: 2), ()=> Get.toNamed(home_page));
     } else {
       Get.showSnackbar(failedSnack('Access Denied'));
       debugPrint('Failed to update : ${response.body}');
@@ -78,28 +81,28 @@ class _UpdatePageState extends State<UpdatePage> {
                         return "can't be empty";
                       }
                     }),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     customText("Project Update", Iconsax.document,
                         TextInputType.text, _project_update, (val) {
                       if (val!.isEmpty) {
                         return "can't be empty";
                       }
                     }),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     customText("Assigned Engineer", Iconsax.profile_tick,
                         TextInputType.text, _assigned_engineer, (val) {
                       if (val!.isEmpty) {
                         return "can't be empty";
                       }
                     }),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     customText("Assigned Tech", Iconsax.profile_2user,
                         TextInputType.text, _assigned_technician, (val) {
                       if (val!.isEmpty) {
                         return "can't be empty";
                       }
                     }),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     customDate(_start_date, () async {
                       DateTime? selectedDate = await showDatePicker(
                         context: context,
@@ -114,7 +117,7 @@ class _UpdatePageState extends State<UpdatePage> {
                         });
                       }
                     }, "Start Date"),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     customDate(_end_date, () async {
                       DateTime? selectedDate = await showDatePicker(
                         context: context,
